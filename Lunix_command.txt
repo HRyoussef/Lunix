@@ -1,0 +1,47 @@
+
+>> concatiner (fussioner) plusiuers fichier pdf en un seul 
+pdftk *.pdf cat output concat.pdf
+	
+>> a partire du pdf (concat.pdf) genère un nuveau pdf qui contien les 10 premier pages du pdf original
+pdftk concat.pdf cat 1-10 output 10_first_pages.pdf
+
+
+>> extraire les images dans un pdf (concat.pdf) en format .jpg, .ppm, .pbm
+ pdfimages -j concat.pdf prefix
+
+>> commande (script shell) pour converter les ppm et pbm en jpg
+for f in *.{ppm,pbm}; do     [ -f "$f" ] || continue      # ignore si le motif ne trouve rien
+    filename=$(basename "$f")    # ne prend que le nom du fichier
+    convert "$f" "pdf_image_jpg/${filename%.*}.jpg"; done
+
+
+######################################    Vous pouvez créer vos propres outils complexes à la volée  ##########################################
+
+
+>>En utilisant l’opérateur pipe, comptez le nombre de fichiers présents dans le dossier
+arborescence
+ls -l | wc -l
+	
+>>En utilisant l’opérateur ls, head et l’opérateur pipe afficher les 5 fichiers qui ont été e plus récemment accédés dans votre répertoire Downloads/
+ls -ltu ~/Téléchargements | head -n 6
+
+
+####################################  Partagez vos fichiers très facilement sur votre réseau local ############################################
+>> Afficher votre adresse ip local en utilisant cette ressource :
+hostname -I
+
+
+>> Créer un serveur web à la volée pour partager vos fichiers
+python -m http.server
+
+>>pour afficher  le dossier dans lequel on est
+python -m http.server 8080 --bind 172.22.114.75
+
+>>pour afficher un dossier spécifique (pas le dossier dans lequel on est)
+python -m http.server 8080 --bind 172.22.114.75 --directory /var/ww/pub
+
+>>Vérifier quel processus utilise le port
+lsof -i :8080
+
+>> Tuer le processus si nécessaire
+kill -9 "PID"
