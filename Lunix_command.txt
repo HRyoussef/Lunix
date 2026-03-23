@@ -45,3 +45,32 @@ lsof -i :8080
 
 >> Tuer le processus si nécessaire
 kill -9 "PID"
+##################################################### cammandes utiles ############################################################
+
+>> chnager le propritère d'un fichier dossier .., dans e cas suivant le propritère devient root
+sudo chown root yrytyeyets.png 
+
+>> changer les droits sur un fichier 
+chmod 666 "nom du fichier"
+chmod 600 "nom du fichier"
+chmod 660 "nom du fichier"
+chmod 700 "nom du fichier"
+chmod a-r "nom du fichier"
+
+
+#####################################################    Faîtes des backups de vos fichiers ########################################  
+>> Utilisez la commande rsync pour sauvegarder le dossier PDFs/
+rsync -av ../PDFs backup/
+
+>>Faîtes des modifications, vérifiez qu’elles sont correctement prises en compte.
+J'ia cree un nouveau fichier .txt  dans le dossier PDFs :    echo "Test" >> PDFs/nouveau_fichier.txt
+puis j'ai rsync les deux dossiers :  rsync -av PDFs/ arborescence/backup/
+
+
+
+####################################################  Automatisez l’exécution de scripts python (Cron)     ##############################
+
+>>cree un fscript python qui fait qlqs chose par exemple : j'ai cree un scripte " auto_push.py" qui me fiat un push chaque 15min dans mon git dans un dossier privée "auto"
+le dossier se trouve en local sur campus/auto_push
+>> pour arriter le cron il faut enlevé la ligne ajouté  au crontab
+crontab -e
