@@ -1,0 +1,125 @@
+############################################ Partie 3 : gestion automatisée de fichiers #############################################
+Après ecriture du script "montrieur.sh"
+
+commande pour le rendre excutabe:
+>>chmod +x montrieur.sh"
+
+voir le tree ddes dossier et les 5 remier fichier de chaqu"un des sous dossier :
+>>tree WDGAS -d && for dept in BU HR IT; do echo "=== $dept ===" && ls WDGAS/$dept | head -5; done
+
+avec WDGAS: est le dossier qui contien tous les fichiers 
+
+#############################################                  Entrées/Sorties                  ###########################################################
+
+
+                                                                         ##############  Compter des éléments dans un fichier ##################
+
+> : crée/écrase le fichier
+>> : ajoute à la suite sans écraser
+
+
+																										Pour savoir le nbr de lignes d'un fichier "fr.txt"
+																										>>echo "Nombre de lignes : $(wc -l < fr.txt)" > param-fr
+
+																										Pour savoir le nbr de mots d'un fichier "fr.txt"
+																										>>echo "Nombre de mots : $(wc -w < fr.txt)" >> param-fr
+
+																										Pour savoir le nbr d'octets d'un fichier "fr.txt"
+																										>>echo "Nombre d'octets : $(wc -lc< fr.txt)" >> param-fr
+
+
+																										le fichier param-fr :
+																										Nombre de lignes : 74067
+																										Nombre de mots   : 3402633
+																										Nombre d'octets  : 23634544
+
+
+                                                                         ############  Compter les occurrences des mots du fichier  ###############
+
+																		 
+																										Enlever la ponctuation :
+																										>>cat fr.txt | sed -e "s/[[:punct:]]//g"
+																										Mettre en minuscules :
+																										 >>cat fr.txt | sed -e 's/./\L&/g'
+																										Enlever les chiffres :
+																										>>cat fr.txt | sed -e 's/[0-9]*//g'
+																										
+																										les trois en meme temps:
+																										>>cat fr.txt | sed -e "s/[[:punct:]]//g" -e 's/./\L&/g' -e 's/[0-9]*//g' | grep -v "^$" > preproc_fr.txt
+																										
+																										Vérification: 
+																										>>head -5 preproc_fr.txt
+Explication de chaque partie :
+GREP = Global Regular Expression Print
+
+>>Sert à chercher/filtrer du texte
+>>Affiche les lignes qui correspondent à un motif
+
+SED = Stream EDitor
+
+>>Sert à transformer du texte
+>>Supprimer, remplacer, modifier des caractères
+
+
+cat fr.txt : lit le fichier
+| : passe le résultat à la commande suivante
+sed -e "s/[[:punct:]]//g" : supprime toute la ponctuation
+sed -e 's/./\L&/g' : met tout en minuscules
+sed -e 's/[0-9]*//g' : supprime tous les chiffres
+grep -v "^$" : supprime les lignes vides (-v = exclure, ^$ = ligne vide)
+> preproc_fr.txt : écrit le résultat dans le nouveau fichier																										
+
+
+##################################################### Comptage d'occurrences  #################################################""
+														                                                Mettre chaque mot sur une ligne, trier et compter les occurrences 
+																										>>cat preproc_fr.txt | tr ' ' '\n' | sort | uniq -c | sort -n > index_fr
+																										Les 30 mots les plus utilisés :
+																										>>tail -30 index_fr > top_30_fr
+																										Les 30 mots les moins utilisés :
+																										>>head -30 index_fr > last_30_fr
+																										
+																										
+																										
+cat preproc_fr.txt | tr ' ' '\n' | sort | uniq -c | sort -n > index_fr
+```
+
+**`cat preproc_fr.txt`**
+```
+bonjour le monde
+hello le monde
+```
+
+**`tr ' ' '\n'`** - remplace les espaces par des sauts de ligne :
+```
+bonjour
+le
+monde
+hello
+le
+monde
+```
+
+**`sort`** - trie alphabétiquement :
+```
+bonjour
+hello
+le
+le
+monde
+monde
+```
+
+**`uniq -c`** - compte les occurrences :
+```
+1 bonjour
+1 hello
+2 le
+2 monde
+```
+
+**`sort -n`** - trie par nombre croissant :
+```
+1 bonjour
+1 hello
+2 le
+2 monde
